@@ -8,6 +8,7 @@ var bufs : Bufs = Bufs.Make(self, [
 ])
 var onfloor : bool = false
 var waterjumps : int = 0
+var inwater : bool = false
 
 @onready var startpos = position
 
@@ -32,17 +33,21 @@ func _physics_process(delta: float) -> void:
 	if bufs.try_eat([FLORBUF, PINJUMPBUF]):
 		onfloor = false
 		velocity.y = -1.5
-	elif waterjumps > 0 and $buoyansensor.get_overlapping_areas()!=[] and bufs.try_eat([PINJUMPBUF]):
+	elif waterjumps > 0 and inwater and bufs.try_eat([PINJUMPBUF]):
 		# waterjump
 		velocity.y = -0.5 -0.4 * waterjumps
 		waterjumps -= 1
+		inwater = false
 	velocity.x = move_toward(velocity.x, dpad.x, 0.1 if onfloor else 0.05)
 	velocity.y = move_toward(velocity.y, 2.5, 0.05 if (velocity.y > 0 or Input.is_action_pressed("jump")) else 0.15)
-	if $buoyansensor.get_overlapping_areas() and velocity.y > 0:
-		if waterjumps > 0:
-			velocity.y *= 0.7
-		else:
-			velocity.y *= 0.85
+	if $buoyansensor.get_overlapping_areas():
+		if velocity.y > 0 and not inwater:
+			inwater = true
+			velocity.y = 0
+		if inwater:
+			velocity.y *= 0.9
+	else:
+		inwater = false
 	if dpad.x: spr.flip_h = dpad.x < 0
 	if not mover.try_slip_move(self, caster, HORIZONTAL, velocity.x):
 		velocity.x = 0
