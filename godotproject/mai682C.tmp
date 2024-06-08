@@ -72,7 +72,7 @@ size = Vector2(4, 4)
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_o2kaf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y5xfx"]
-size = Vector2(32, 40)
+size = Vector2(36, 40)
 
 [node name="Main" type="Node2D"]
 texture_filter = 1
@@ -229,15 +229,12 @@ label_settings = SubResource("LabelSettings_svubt")
 position = Vector2(-63, 45)
 
 [node name="(unreachable)" type="Node2D" parent="screens/world_screen/level_ctr/level1"]
-position = Vector2(2015, -1533)
+position = Vector2(2010, -1504)
 script = ExtResource("4_0ww10")
-midi_printdelay = 10
-long_printdelay = 80
-midi_chars = ""
-long_chars = "!.?:"
+linebreak_midi = false
 
 [node name="Area2D" type="Area2D" parent="screens/world_screen/level_ctr/level1/(unreachable)"]
-position = Vector2(27, 72)
+position = Vector2(16, 39)
 collision_layer = 0
 collision_mask = 32
 
@@ -245,13 +242,13 @@ collision_mask = 32
 shape = SubResource("RectangleShape2D_n5uxg")
 
 [node name="Label" type="Label" parent="screens/world_screen/level_ctr/level1/(unreachable)"]
-offset_left = -52.0
+offset_left = -46.0
 offset_top = 11.0
-offset_right = 159.0
-offset_bottom = 56.0
+offset_right = 165.0
+offset_bottom = 40.0
 text = "eventually
 i became
-convinced:
+convinced
 there was no getting
 over it."
 label_settings = SubResource("LabelSettings_svubt")
@@ -424,6 +421,7 @@ collision_mask = 0
 shape = SubResource("WorldBoundaryShape2D_o2kaf")
 
 [node name="hungry" type="Node2D" parent="screens/world_screen/Water"]
+visible = false
 position = Vector2(-292, 105)
 script = ExtResource("4_0ww10")
 linebreak_midi = false
@@ -465,11 +463,12 @@ position = Vector2(0, -2.5)
 shape = SubResource("RectangleShape2D_y5xfx")
 
 [node name="Label" type="Label" parent="screens/world_screen/Water/the-end"]
-offset_left = -4.0
-offset_top = 59.0
-offset_right = 44.0
-offset_bottom = 74.0
-text = "end"
+offset_left = 10.0
+offset_top = 38.0
+offset_right = 58.0
+offset_bottom = 53.0
+text = "i was not
+   hungry."
 label_settings = SubResource("LabelSettings_svubt")
 
 [node name="respawn" type="Marker2D" parent="screens/world_screen/Water/the-end"]

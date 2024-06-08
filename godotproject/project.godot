@@ -19,6 +19,7 @@ boot_splash/fullsize=false
 [autoload]
 
 ThoughtMgr="*res://ThoughtMgr.gd"
+Events="*res://Events.gd"
 
 [display]
 
@@ -41,6 +42,7 @@ jump={
 [layer_names]
 
 2d_physics/layer_5="water"
+2d_physics/layer_10="consumable"
 
 [rendering]
 

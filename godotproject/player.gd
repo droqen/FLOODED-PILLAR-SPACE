@@ -2,6 +2,8 @@ extends Node2D
 
 enum { PINJUMPBUF, FLORBUF, DEADBUF }
 
+var gameover : bool = false
+
 var velocity : Vector2
 var bufs : Bufs = Bufs.Make(self, [
 	PINJUMPBUF,3, FLORBUF,3, DEADBUF,60,
@@ -57,7 +59,11 @@ func _physics_process(delta: float) -> void:
 		(1 if Input.is_key_pressed(KEY_DOWN) else 0)
 		-(1 if Input.is_key_pressed(KEY_UP) else 0)
 	)
-	if bufs.has(DEADBUF): dpad *= 0
+	
+	#if Input.is_key_pressed(KEY_G):
+		#velocity = dpad * 10
+	
+	if gameover or bufs.has(DEADBUF): dpad *= 0
 	var spr : SheetSprite = $SheetSprite
 	var mover : NavdiBodyMover = $mover
 	var caster = $mover/solidcast
@@ -65,6 +71,7 @@ func _physics_process(delta: float) -> void:
 		bufs.on(FLORBUF)
 		waterjumps = 3
 	if Input.is_action_just_pressed("jump"): bufs.on(PINJUMPBUF)
+	if gameover or bufs.has(DEADBUF): bufs.clr(PINJUMPBUF)
 	if bufs.try_eat([FLORBUF, PINJUMPBUF]):
 		onfloor = false
 		velocity.y = -1.5
@@ -97,3 +104,6 @@ func _physics_process(delta: float) -> void:
 	onfloor = velocity.y >= 0 and mover.cast_fraction(self, caster, VERTICAL, 1.0) < 1.0
 
 	$Label.text = "floor" if onfloor else "-----"
+	
+	for apple in $applesensor.get_overlapping_areas():
+		if apple.has_method('eat'): apple.call('eat')

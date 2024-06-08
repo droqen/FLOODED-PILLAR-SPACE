@@ -1,5 +1,9 @@
 extends Node2D
 
+signal activated
+
+@export var enabled : bool = true
+
 var printdelay : int = 0
 
 @export var base_printdelay : int = 2
@@ -14,9 +18,11 @@ var printdelay : int = 0
 func _ready():
 	$Label.visible_characters = 0
 	$Area2D.connect("area_entered", func(_area):
-		ThoughtMgr.active_thought = self
-		if has_node("respawn"):
-			ThoughtMgr.active_respawn = $respawn
+		if enabled:
+			emit_signal("activated")
+			ThoughtMgr.active_thought = self
+			if has_node("respawn"):
+				ThoughtMgr.active_respawn = $respawn
 	)
 
 func _physics_process(delta: float) -> void:
