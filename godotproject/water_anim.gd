@@ -2,13 +2,19 @@ extends Node
 
 @export var wave_noise_speed : float = 1.0
 @export var wave_noise_amplitude = 1.0
-@export var wave_noise : Noise
+@export var wave_noise : FastNoiseLite
 @onready var maze : Maze = $"../Water"
 @onready var maze_start_pos : Vector2 = maze.position
 @onready var camera : Camera2D = $"../world_cam"
 
 var t : float
 var buf : int = 0
+
+func _ready():
+	randomize()
+	wave_noise.seed = randi()
+	maze.position.y = maze_start_pos.y + wave_noise.get_noise_1d(t) * wave_noise_amplitude
+	$"../player".position.y = maze.position.y + 150
 
 func _physics_process(delta: float) -> void:
 	#maze.position.x = lerp(maze.position.x, camera.position.x - 90, 0.1)
